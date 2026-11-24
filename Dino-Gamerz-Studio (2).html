@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:dark;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}img{max-width:100%}</style>
+<title>Dino Gamerz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: creator studio, single column phone app, sticky header, bottom tabs, 16:9 alert stage as the hero of the Alerts tab. Committed dark look (jungle ink + fossil amber). */
+:root{
+  --bg:#0d1411;
+  --surface:#15201a;
+  --surface2:#1d2b23;
+  --line:#2b3f34;
+  --fg:#eef5ef;
+  --muted:#93aa9c;
+  --accent:#ffb21f;
+  --accent-ink:#1a1100;
+  --live:#ff4b4b;
+  --ok:#3ddc84;
+  --font-d:'Chakra Petch',system-ui,sans-serif;
+  --font-b:'Inter',system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--font-b);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+body.lock{overflow:hidden}
+.wrap{max-width:520px;margin:0 auto;min-width:0}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-d);margin:0;letter-spacing:.01em;text-wrap:balance}
+h2{font-size:1.15rem}
+h3{font-size:1rem}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.8rem}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.i.sm{width:16px;height:16px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.logo{width:40px;height:40px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none}
+.logo svg{width:28px;height:28px}
+.brand{min-width:0;flex:1}
+.brand b{display:block;font-family:var(--font-d);font-size:1.15rem;line-height:1.1}
+.brand span{font-size:.75rem;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--surface2);border:1px solid var(--line);white-space:nowrap}
+.badge.live{background:rgba(255,75,75,.14);border-color:rgba(255,75,75,.5);color:#ff8a8a;font-variant-numeric:tabular-nums}
+.badge.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--live)}
+.badge.ok{color:var(--ok);border-color:rgba(61,220,132,.45);background:rgba(61,220,132,.1)}
+.badge.warn{color:var(--accent);border-color:rgba(255,178,31,.45);background:rgba(255,178,31,.1)}
+
+main{padding-block:16px 120px}
+.view{display:flex;flex-direction:column;gap:14px}
+.view[hidden]{display:none!important}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.row{display:flex;align-items:center;gap:10px;min-width:0}
+.row.between{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.t{font-weight:600;overflow-wrap:anywhere}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);font-weight:600;text-decoration:none;text-align:center}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.block{width:100%}
+.btn.small{min-height:36px;padding:6px 12px;font-size:.85rem}
+.btn[disabled]{opacity:.55;cursor:default}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btns>*{flex:1 1 140px}
+
+.switch{position:relative;width:48px;height:28px;border-radius:999px;border:1px solid var(--line);background:var(--surface2);padding:0;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--muted);transition:transform .15s}
+.switch[aria-checked="true"]{background:var(--accent);border-color:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(20px);background:var(--accent-ink)}
+
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:.8rem;color:var(--muted);font-weight:500}
+input[type=text],input[type=number],textarea,select{width:100%;font-size:16px;min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--fg)}
+textarea{min-height:90px;resize:vertical}
+input[type=range]{width:100%;accent-color:var(--accent);min-height:28px}
+input[type=color]{width:100%;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);padding:4px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+
+.list{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--surface2);border:1px solid var(--line);min-width:0}
+.check{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:var(--surface2);border:1px solid var(--line);min-height:44px}
+.check input{width:20px;height:20px;accent-color:var(--accent);flex:none}
+.note{font-size:.82rem;color:var(--muted);padding:10px 12px;border-radius:10px;border:1px dashed var(--line)}
+.steps{margin:0;padding-left:20px;color:var(--muted);font-size:.88rem;display:flex;flex-direction:column;gap:4px}
+.timer{font-family:var(--font-d);font-weight:700;font-size:2rem;font-variant-numeric:tabular-nums}
+.day{width:48px;flex:none;text-align:center;font-family:var(--font-d);line-height:1.1}
+.day b{display:block;font-size:1.25rem}
+.day span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{padding:12px;border-radius:12px;background:var(--surface2);border:1px solid var(--line)}
+.stat b{display:block;font-family:var(--font-d);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:10px;font-family:var(--font-b)}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.chart .b{fill:var(--line)}
+.chart .b.hi{fill:var(--accent)}
+.chart text.v{fill:var(--fg);font-weight:600}
+.winner{font-family:var(--font-d);font-size:1.6rem;font-weight:700;color:var(--accent);overflow-wrap:anywhere}
+
+/* alert stage */
+.stage{--ac:var(--accent);position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;display:grid;place-items:center;container-type:inline-size;background:linear-gradient(135deg,#10201a,#0a110e);border:1px solid var(--line)}
+.stage[data-bg="green"]{background:#00b140}
+.stage[data-bg="black"]{background:#000}
+.stage .layer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2cqw;padding:4cqw;text-align:center;transition:opacity .25s}
+.stage .idle{opacity:1;color:rgba(255,255,255,.55)}
+.stage .idle svg{width:9cqw;height:9cqw;color:var(--ac)}
+.stage .idle span{font-size:3cqw}
+.stage .alert{opacity:0;transform:scale(.92);transition:opacity .25s,transform .25s}
+.stage.showing .alert{opacity:1;transform:scale(1)}
+.stage.showing .idle{opacity:0}
+.stage .lbl{font-family:var(--font-d);letter-spacing:.3em;font-size:3cqw;color:var(--ac);font-weight:600;text-transform:uppercase}
+.stage .nm{font-family:var(--font-d);font-weight:700;font-size:9cqw;line-height:1.05;color:#fff;text-shadow:0 .5cqw 2cqw rgba(0,0,0,.6);overflow-wrap:anywhere;max-width:100%}
+.stage .ms{font-size:3.4cqw;color:rgba(255,255,255,.88);text-shadow:0 .3cqw 1cqw rgba(0,0,0,.6);max-width:90%}
+.goal{position:absolute;left:4cqw;right:4cqw;bottom:3cqw;display:flex;flex-direction:column;gap:.8cqw;font-size:2.4cqw;color:#fff;font-weight:600;text-shadow:0 .2cqw .6cqw rgba(0,0,0,.7)}
+.goal .bar{height:1.6cqw;border-radius:99px;background:rgba(0,0,0,.45);overflow:hidden}
+.goal .bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .4s}
+.goal .gl{display:flex;justify-content:space-between}
+.stage .close{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:3;display:none;min-height:40px;padding:6px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.55);color:#fff;font-weight:600}
+.stage.full{position:fixed;inset:0;z-index:100;aspect-ratio:auto;border-radius:0;border:0}
+.stage.full .close{display:block}
+.stage.full .idle{opacity:0}
+.qchip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);font-size:.8rem}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:36px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.85rem}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;background:rgba(13,20,17,.96);border-top:1px solid var(--line);padding:6px max(10px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+.nav .in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;padding:6px 0;color:var(--muted);font-size:.72rem;font-weight:600;border-radius:10px;min-height:52px}
+.nav button[aria-current="page"]{color:var(--accent)}
+.nav .i{width:22px;height:22px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.88rem;max-width:calc(100% - 32px);text-align:center;opacity:0;pointer-events:none;transition:opacity .15s;z-index:150}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+#cv,#tc{width:100%;aspect-ratio:16/9;border-radius:10px;background:#000;display:block}#cv{touch-action:none}
+.item.sel{border-color:var(--accent)}.item[data-l]{cursor:pointer}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="dino" viewBox="0 0 32 32"><g fill="currentColor"><rect x="18" y="4" width="10" height="9"/><rect x="18" y="13" width="9" height="3"/><rect x="10" y="10" width="10" height="13"/><rect x="2" y="14" width="8" height="4"/><rect x="4" y="18" width="6" height="3"/><rect x="12" y="23" width="4" height="6"/><rect x="18" y="23" width="4" height="6"/><rect x="20" y="17" width="4" height="2"/></g><rect x="23" y="6" width="2" height="2" style="fill:var(--eye,#1a1100)"/></symbol>
+    <symbol id="i-live" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M7.5 7.5a6.4 6.4 0 0 0 0 9M16.5 7.5a6.4 6.4 0 0 1 0 9M4.5 4.5a10.6 10.6 0 0 0 0 15M19.5 4.5a10.6 10.6 0 0 1 0 15"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+    <symbol id="i-tools" viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5L10 21a2.1 2.1 0 0 1-3-3zM14.5 6.5l3-3 3 3-3 3"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+    <symbol id="i-cam" viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="3"/><path d="M16 10l6-3v10l-6-3"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#dino"/></svg></div>
+    <div class="brand"><b>Dino Gamerz Studio</b><span>@dinogamerz072</span></div>
+    <span class="badge" id="liveState">Offline</span>
+  </header>
+
+  <main>
+    <!-- LIVE -->
+    <section class="view" id="v-live" aria-label="Live">
+      <div class="card">
+        <div class="row between"><h2>Stream details</h2><span class="badge">Auto save</span></div>
+        <div class="field"><label for="title">Title</label><input type="text" id="title" data-cfg="title" maxlength="100" placeholder="Jaise: Squad ke saath ranked grind"></div>
+        <div class="two"><div class="field"><label for="catId">Category</label><select id="catId"><option value="20">Gaming</option><option value="24">Entertainment</option><option value="22">People &amp; Blogs</option><option value="23">Comedy</option><option value="10">Music</option><option value="17">Sports</option><option value="27">Education</option><option value="28">Science &amp; Tech</option><option value="26">Howto &amp; Style</option><option value="25">News</option></select></div>
+        <div class="field"><label for="cat">Game ka naam</label><input type="text" id="cat" data-cfg="cat" maxlength="60" placeholder="Free Fire, BGMI..."></div></div>
+        <div class="field"><label for="desc">Description</label><textarea id="desc" data-cfg="desc" maxlength="400"></textarea></div>
+        <button class="btn block" id="copyDetails"><svg class="i sm"><use href="#i-copy"/></svg>Sab copy karo</button>
+      </div>
+
+      <div class="card">
+        <h2>Thumbnail</h2>
+        <canvas id="tc" width="1280" height="720"></canvas>
+        <div class="field"><label for="ttx">Thumbnail par text</label><input type="text" id="ttx" maxlength="40" autocomplete="off" placeholder="Jaise: RANKED GRIND"></div>
+        <input type="file" id="tFile" accept="image/*" hidden>
+        <div class="btns"><button class="btn" id="tPick">Image chuno</button><button class="btn" id="tFrame">Studio se frame</button><button class="btn" id="tDl">Download</button></div>
+        <button class="btn primary block" id="ytApply">YouTube par apply (title, category, thumbnail)</button>
+        <p class="note">Apply ke liye Connect tab me Google login chahiye. Ye aapki active ya upcoming live stream par lagta hai.</p>
+      </div>
+
+      <div class="card">
+        <div class="row between"><h2>Go live</h2><svg class="i" style="color:var(--live)"><use href="#i-live"/></svg></div>
+        <a class="btn primary block" href="https://studio.youtube.com" target="_blank" rel="noopener noreferrer">YouTube Studio kholo<svg class="i sm"><use href="#i-ext"/></svg></a>
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="btns"><button class="btn" id="timerBtn">Stream timer shuru</button><button class="btn" id="timerReset">Reset</button></div>
+        <ol class="steps">
+          <li>Prism Live ya OBS me YouTube account login karo.</li>
+          <li>Upar ka title aur game wahan paste karo.</li>
+          <li>Alerts tab ka overlay Window capture ya screen capture se add karo.</li>
+          <li>Live dabao, phir yahan timer shuru karo.</li>
+        </ol>
+        <p class="note">Seedha app se live: Studio tab me camera/screen jodo aur WHIP link se stream bhejo. YouTube Studio ya Prism ki ab zaroorat nahi.</p>
+      </div>
+
+      <div class="card">
+        <h2>Pre-live checklist</h2>
+        <div class="list" id="checklist"></div>
+      </div>
+    </section>
+
+    <!-- STUDIO -->
+    <section class="view" id="v-studio" hidden aria-label="Studio">
+      <div class="card">
+        <div class="row between"><h2>Stream studio</h2><span class="badge" id="stState">Preview</span></div>
+        <canvas id="cv" width="1280" height="720"></canvas>
+        <div class="btns"><button class="btn small" data-add="cam">Camera</button><button class="btn small" data-add="scr">Screen</button><button class="btn small" data-add="img">Image</button><button class="btn small" data-add="txt">Text</button><button class="btn small" data-add="emo">Sticker</button></div>
+        <div class="seg" id="stkBox" hidden></div>
+        <input type="file" id="imgIn" accept="image/*" hidden>
+        <div class="seg" id="scenes"></div>
+        <p class="small muted">Canvas par drag karke layer hilao.</p>
+      </div>
+      <div class="card">
+        <h3>Layers</h3>
+        <div class="list" id="lyList"></div>
+        <div id="lyCtl" hidden style="display:flex;flex-direction:column;gap:10px">
+          <div class="field" id="cTxW"><label for="cTx">Text / sticker</label><input type="text" id="cTx" maxlength="40"></div>
+          <div class="two"><div class="field"><label for="cS">Size</label><input type="range" id="cS" min="0.2" max="3" step="0.05"></div><div class="field"><label for="cR">Rotate</label><input type="range" id="cR" min="-180" max="180" step="1"></div>
+          <div class="field"><label for="cO">Opacity</label><input type="range" id="cO" min="0.1" max="1" step="0.05"></div><div class="field"><label for="cF">Filter</label><select id="cF"><option value="">Normal</option><option value="brightness(1.3) contrast(1.1)">Bright</option><option value="grayscale(1)">B&amp;W</option><option value="blur(6px)">Blur</option><option value="sepia(.6) saturate(1.4)">Warm</option></select></div></div>
+          <div class="btns"><button class="btn small" id="cFl">Flip</button><button class="btn small" id="cUp">Upar</button><button class="btn small" id="cDn">Neeche</button><button class="btn small" id="cDel">Hatao</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Chat pin aur poll</h3>
+        <div class="field"><label for="pinT">Pin message</label><input type="text" id="pinT" maxlength="90" autocomplete="off"></div>
+        <button class="btn block" id="pinB">Screen par pin karo</button>
+        <div class="field"><label for="pq">Poll ka sawal</label><input type="text" id="pq" maxlength="60" autocomplete="off"></div>
+        <div class="two"><input type="text" id="po0" maxlength="30" placeholder="Option 1"><input type="text" id="po1" maxlength="30" placeholder="Option 2"></div>
+        <input type="text" id="po2" maxlength="30" placeholder="Option 3 (optional)">
+        <button class="btn block" id="pollB">Poll lagao</button>
+        <div class="btns" id="votes"></div>
+      </div>
+      <div class="card">
+        <h2>Record aur Go live</h2>
+        <div class="row"><div class="grow"><b>Mic</b></div><button class="switch" id="micSw" role="switch" aria-checked="false" aria-label="Mic"></button></div>
+        <div class="field"><label for="whip">WHIP link (https)</label><input type="text" id="whip" autocomplete="off" inputmode="url"></div>
+        <div class="field"><label for="wkey">Stream key / token</label><input type="password" id="wkey" autocomplete="off"></div>
+        <button class="btn block" id="ytLive">Channel se YouTube live banao (URL + key)</button>
+        <div id="rtmpBox" hidden class="field"><label>YouTube RTMP URL aur key (relay me daalo)</label><input type="text" id="rtmp" readonly><input type="text" id="rkey" readonly><button class="btn small" id="rCopy">Copy dono</button></div>
+        <div class="btns"><button class="btn" id="recBtn">Record</button><button class="btn primary" id="liveBtn">Go live</button></div>
+        <p class="note">Browser seedha RTMP nahi bhej sakta, WHIP (WebRTC) bhejta hai. Cloudflare Stream, MediaMTX, LiveKit jaisi WHIP service ka link yahan daalo. Stream me alert ki voice nahi jaati (browser limit), screen alert jaata hai. Live ke dauran ye tab khula aur screen on rakho. Phone par Screen share aksar nahi chalta, camera chalta hai.</p>
+      </div>
+    </section>
+
+    <!-- ALERTS -->
+    <section class="view" id="v-alerts" hidden aria-label="Alerts">
+      <div class="stage" id="stage" data-bg="dark">
+        <button class="close" id="closeFull">Band karo</button>
+        <div class="layer idle"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#dino" style="--eye:transparent"/></svg><span>Subscriber alert yahan dikhega</span></div>
+        <div class="layer alert" aria-live="polite"><div class="lbl" id="stLbl">Naya subscriber</div><div class="nm" id="stName"></div><div class="ms" id="stMsg"></div></div>
+        <div class="goal"><div class="gl"><span>Subscriber goal</span><span id="goalTxt">0 / 1000</span></div><div class="bar"><i id="goalBar"></i></div></div>
+      </div>
+      <div class="btns">
+        <button class="btn" id="fullBtn"><svg class="i sm"><use href="#i-expand"/></svg>Full screen</button>
+        <button class="btn" id="voiceTest"><svg class="i sm"><use href="#i-mic"/></svg>Voice test</button>
+      </div>
+
+      <div class="card">
+        <h2>Naya subscriber alert</h2>
+        <div class="field"><label for="alName">Subscriber ka naam</label><input type="text" id="alName" maxlength="30" autocomplete="off" placeholder="Jaise: Rohit Gamer"></div>
+        <div class="field"><label for="alMsg">Aakhir me kya bolna hai</label><input type="text" id="alMsg" data-cfg="msg" maxlength="120" autocomplete="off"></div>
+        <div class="btns">
+          <button class="btn primary" id="playNow">Alert chalao</button>
+          <button class="btn" id="addQ">Queue me daalo</button>
+        </div>
+        <p class="small muted">Voice aise bolegi: intro, subscriber ka naam, phir tumhara message.</p>
+      </div>
+
+      <div class="card">
+        <div class="row between"><h3>Queue</h3><span class="qchip" id="qCount">0 baaki</span></div>
+        <div class="field"><label for="bulk">Naam paste karo (ek line me ek naam)</label><textarea id="bulk" placeholder="Rohit&#10;Sneha&#10;Aman GG"></textarea></div>
+        <div class="btns"><button class="btn" id="bulkAdd">Queue me daalo</button><button class="btn" id="clearQ">Queue khali</button></div>
+        <div class="list" id="hist"></div>
+      </div>
+
+      <div class="card">
+        <h3>Voice aur look</h3>
+        <div class="field"><label for="intro">Naam se pehle kya bole</label><input type="text" id="intro" data-cfg="intro" maxlength="60"></div>
+        <div class="field"><label for="voiceSel">Voice</label><select id="voiceSel" data-cfg="voice"></select></div>
+        <div class="two">
+          <div class="field"><label for="rate">Speed <span data-out="rate"></span></label><input type="range" id="rate" data-cfg="rate" min="0.6" max="1.4" step="0.05"></div>
+          <div class="field"><label for="pitch">Pitch <span data-out="pitch"></span></label><input type="range" id="pitch" data-cfg="pitch" min="0.5" max="1.6" step="0.05"></div>
+          <div class="field"><label for="vol">Volume <span data-out="vol"></span></label><input type="range" id="vol" data-cfg="vol" min="0.2" max="1" step="0.05"></div>
+          <div class="field"><label for="dur">Screen par <span data-out="dur"></span>s</label><input type="range" id="dur" data-cfg="dur" min="3" max="15" step="1"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="accent">Rang</label><input type="color" id="accent" data-cfg="accent"></div>
+          <div class="field"><label for="goal">Goal</label><input type="number" id="goal" data-cfg="goal" min="1" inputmode="numeric"></div>
+        </div>
+        <div class="field"><label>Background (chroma key ke liye green)</label>
+          <div class="seg" id="bgSeg" role="group" aria-label="Background">
+            <button class="chip" data-bg="dark" aria-pressed="true">Dark</button><button class="chip" data-bg="green" aria-pressed="false">Green screen</button><button class="chip" data-bg="black" aria-pressed="false">Black</button>
+          </div></div>
+        <div class="field"><label for="subs">Abhi ke subscribers</label><input type="number" id="subs" data-cfg="subs" min="0" inputmode="numeric"></div>
+        <div class="row"><div class="grow"><b>Voice mute</b><div class="small muted">Sirf screen alert dikhega</div></div><button class="switch" id="muteSw" role="switch" aria-checked="false" aria-label="Voice mute"></button></div>
+        <p class="note" id="voiceNote"></p>
+      </div>
+    </section>
+
+    <!-- CONNECT -->
+    <section class="view" id="v-connect" hidden aria-label="Connect">
+      <div class="card">
+        <div class="row between"><h2>YouTube channel</h2><span class="badge warn" id="chanState">Link saved</span></div>
+        <div class="field"><label for="channel">Channel link</label><input type="text" id="channel" data-cfg="channel" inputmode="url" autocomplete="off"></div>
+        <a class="btn block" id="chanOpen" target="_blank" rel="noopener noreferrer">Channel kholo<svg class="i sm"><use href="#i-ext"/></svg></a>
+        <p class="note">Abhi sirf link save hai. Account ka asli login (Google sign-in) is page se nahi ho sakta.</p>
+      </div>
+
+      <div class="card">
+        <div class="row between"><h2>Google login</h2><span class="badge" id="gState">Not connected</span></div>
+        <div class="field"><label for="cid">Google OAuth Client ID</label><input type="text" id="cid" autocomplete="off" placeholder="xxxx.apps.googleusercontent.com"></div>
+        <button class="btn primary block" id="gBtn">Google se connect karo</button>
+        <div class="row"><div class="grow"><b>Auto subscriber alert</b><div class="small muted">Har 15 sec me naya subscriber, naam apne aap voice me</div></div><button class="switch" id="autoSw" role="switch" aria-checked="false" aria-label="Auto alert"></button></div>
+        <p class="note">Ek baar setup: Google Cloud Console me YouTube Data API v3 on karo, Web OAuth Client ID banao, aur Authorized JavaScript origins me us https link ko daalo jahan ye file khuli hai. Jo log subscription private rakhte hain unka naam YouTube nahi deta. Login lagbhag 1 ghanta chalta hai.</p>
+      </div>
+
+      <div class="card">
+        <h2>Live ke liye connector</h2>
+        <p class="muted small">Claude ke connectors me Restream jod sakte ho. Isse live event banana aur schedule karna ho sakta hai. Camera ki live phir bhi Prism, OBS ya YouTube app se jaayegi.</p>
+      </div>
+
+      <div class="card">
+        <h2>Social links</h2>
+        <div class="field"><label for="insta">Instagram</label><input type="text" id="insta" data-cfg="insta" inputmode="url" autocomplete="off" placeholder="https://instagram.com/..."></div>
+        <a class="btn small" id="instaOpen" target="_blank" rel="noopener noreferrer" hidden>Instagram kholo<svg class="i sm"><use href="#i-ext"/></svg></a>
+        <div class="field"><label for="disc">Discord</label><input type="text" id="disc" data-cfg="disc" inputmode="url" autocomplete="off" placeholder="https://discord.gg/..."></div>
+        <a class="btn small" id="discOpen" target="_blank" rel="noopener noreferrer" hidden>Discord kholo<svg class="i sm"><use href="#i-ext"/></svg></a>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="view" id="v-tools" hidden aria-label="Tools">
+      <div class="card">
+        <h2>Agli streams</h2>
+        <div class="list" id="schedList"></div>
+        <p class="note">Ye sample schedule hai. Apne din aur time code ke CONFIG me badlo.</p>
+      </div>
+
+      <div class="card">
+        <h2>Giveaway winner</h2>
+        <div class="field"><label for="gwNames">Naam (ek line me ek)</label><textarea id="gwNames" data-cfg="gw" placeholder="Rohit&#10;Sneha&#10;Aman GG"></textarea></div>
+        <div class="winner" id="winner" aria-live="polite"></div>
+        <div class="btns"><button class="btn primary" id="pickBtn">Winner chuno</button><button class="btn" id="sayWinner" disabled>Voice me bolo</button></div>
+      </div>
+
+      <div class="card">
+        <div class="row between"><h2>Channel stats</h2><span class="badge">Sample</span></div>
+        <div class="stats">
+          <div class="stat"><span class="small muted">Peak viewers</span><b>340</b></div>
+          <div class="stat"><span class="small muted">Avg watch time</span><b>18m</b></div>
+          <div class="stat"><span class="small muted">Naye subs (7 din)</span><b>126</b></div>
+          <div class="stat"><span class="small muted">Chat messages</span><b>2.4k</b></div>
+        </div>
+        <div id="chartBox"></div>
+        <p class="note">Asli numbers ke liye YouTube Analytics connect karna hoga.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="nav" aria-label="Main">
+  <div class="in">
+    <button data-tab="live" aria-current="page"><svg class="i"><use href="#i-live"/></svg>Live</button>
+    <button data-tab="studio"><svg class="i"><use href="#i-cam"/></svg>Studio</button>
+    <button data-tab="alerts"><svg class="i"><use href="#i-bell"/></svg>Alerts</button>
+    <button data-tab="connect"><svg class="i"><use href="#i-link"/></svg>Connect</button>
+    <button data-tab="tools"><svg class="i"><use href="#i-tools"/></svg>Tools</button>
+  </div>
+</nav>
+<button id="dockBtn" class="btn primary" style="position:fixed;right:14px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:40;border-radius:999px;min-height:46px">Live edit</button>
+<div id="dock" hidden style="position:fixed;left:8px;right:8px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:45;max-width:504px;margin:0 auto;background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow:auto">
+  <div class="row between"><b>Live edit</b><button class="btn small" id="dockX" aria-label="Band karo">✕</button></div>
+  <canvas id="dm" width="320" height="180" style="width:100%;aspect-ratio:16/9;border-radius:8px;background:#000"></canvas>
+  <div class="seg" id="dScenes"></div>
+  <div class="seg" id="dStk"></div>
+  <div class="btns" id="dVotes"></div>
+  <div class="list" id="dLy"></div>
+  <div class="field"><label for="dS">Chuni hui layer ka size</label><input type="range" id="dS" min="0.2" max="3" step="0.05"></div>
+  <div class="btns"><button class="btn small" data-add="txt">+ Text</button><button class="btn small" id="dMic">Mic</button><button class="btn small" id="dLive">Go live</button></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ===== Yahan apni details badlo ===== */
+var CONFIG = {
+  channel: 'https://youtube.com/@dinogamerz072',
+  // d: 0=Sunday ... 6=Saturday, time IST me
+  slots: [
+    {d:1,h:20,m:0,t:'Squad gameplay'},
+    {d:3,h:20,m:0,t:'Subscriber special live'},
+    {d:5,h:21,m:0,t:'Chat ke saath ranked'},
+    {d:0,h:19,m:30,t:'Sunday Q&A aur giveaway'}
+  ]
+};
+
+var IST = 5.5*3600e3;
+var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+var store={
+  get:function(k,f){try{var v=localStorage.getItem('dgs_'+k);return v===null?f:JSON.parse(v)}catch(e){return f}},
+  set:function(k,v){try{localStorage.setItem('dgs_'+k,JSON.stringify(v))}catch(e){}}
+};
+var DEF={intro:'Naya subscriber',msg:'Channel family me welcome hai, thank you',voice:'',rate:1,pitch:1,vol:1,dur:6,accent:'#ffb21f',bg:'dark',subs:0,goal:1000,mute:false,title:'',cat:'',desc:'',channel:CONFIG.channel,insta:'',disc:'',gw:'',catId:'20',cid:'',auto:false,whip:'',wkey:'',ttx:''};
+var cfg=store.get('cfg',{});
+Object.keys(DEF).forEach(function(k){if(cfg[k]===undefined)cfg[k]=DEF[k]});
+function saveCfg(){store.set('cfg',cfg)}
+
+var toastT;
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},2400)}
+function copyText(txt,ok){
+  function fb(){
+    try{var ta=document.createElement('textarea');ta.value=txt;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;top:0;left:0';document.body.appendChild(ta);ta.select();
+      var r=document.execCommand('copy');document.body.removeChild(ta);toast(r?ok:'Copy nahi hua, text select karke copy karo')}catch(e){toast('Copy nahi hua, text select karke copy karo')}
+  }
+  try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(function(){toast(ok)},fb);else fb()}catch(e){fb()}
+}
+
+/* ===== Tabs ===== */
+function showTab(n){
+  $$('.view').forEach(function(v){v.hidden=(v.id!=='v-'+n)});
+  $$('.nav button').forEach(function(b){if(b.dataset.tab===n)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  window.scrollTo(0,0);
+}
+$$('.nav button').forEach(function(b){b.addEventListener('click',function(){showTab(b.dataset.tab)})});
+
+/* ===== Config-bound fields ===== */
+function fmtOut(k){var v=Number(cfg[k]);return k==='dur'?String(v):v.toFixed(2).replace(/0$/,'')}
+function refreshOuts(){$$('[data-out]').forEach(function(o){o.textContent=fmtOut(o.dataset.out)})}
+function applyLook(){
+  var st=$('#stage');st.style.setProperty('--ac',cfg.accent);st.dataset.bg=cfg.bg;
+  $$('#bgSeg .chip').forEach(function(c){c.setAttribute('aria-pressed',String(c.dataset.bg===cfg.bg))});
+  var goal=Math.max(1,Number(cfg.goal)||1),subs=Math.max(0,Number(cfg.subs)||0);
+  $('#goalTxt').textContent=subs+' / '+goal;$('#goalBar').style.width=Math.min(100,subs/goal*100)+'%';
+  $('#chanOpen').href=safeUrl(cfg.channel)||CONFIG.channel;
+  ['insta','disc'].forEach(function(k){var a=$('#'+k+'Open'),u=safeUrl(cfg[k]);a.hidden=!u;if(u)a.href=u});
+  var ok=!!safeUrl(cfg.channel);var cs=$('#chanState');cs.textContent=ok?'Link saved':'Link galat hai';cs.className='badge '+(ok?'warn':'');
+}
+function safeUrl(u){u=String(u||'').trim();return /^https:\/\//i.test(u)?u:''}
+function bindCfg(){
+  $$('[data-cfg]').forEach(function(el){
+    var k=el.dataset.cfg;
+    if(el.type==='range'||el.type==='number'||el.type==='text'||el.type==='color'||el.tagName==='TEXTAREA')el.value=cfg[k];
+    el.addEventListener('input',function(){
+      cfg[k]=(el.type==='range'||el.type==='number')?Number(el.value):el.value;saveCfg();refreshOuts();applyLook();
+    });
+  });
+  refreshOuts();
+}
+$('#bgSeg').addEventListener('click',function(e){var b=e.target.closest('[data-bg]');if(!b)return;cfg.bg=b.dataset.bg;saveCfg();applyLook()});
+function renderMute(){$('#muteSw').setAttribute('aria-checked',String(!!cfg.mute))}
+$('#muteSw').addEventListener('click',function(){cfg.mute=!cfg.mute;saveCfg();renderMute()});
+
+/* ===== Voice ===== */
+var voices=[];
+var synthOK=('speechSynthesis' in window)&&typeof SpeechSynthesisUtterance!=='undefined';
+function loadVoices(){
+  if(!synthOK){$('#voiceNote').textContent='Is browser me voice support nahi hai. Screen alert phir bhi chalega.';$('#voiceSel').innerHTML='<option value="">Voice nahi mili</option>';return}
+  try{voices=speechSynthesis.getVoices()||[]}catch(e){voices=[]}
+  if(!voices.length){$('#voiceSel').innerHTML='<option value="">Device ki default voice</option>';$('#voiceNote').textContent='Voices load ho rahi hain. Na dikhe to Voice test dabao.';return}
+  var rank=function(v){var l=(v.lang||'').toLowerCase();return l.indexOf('hi')===0?0:(l==='en-in'?1:2)};
+  var sorted=voices.slice().sort(function(a,b){return rank(a)-rank(b)||a.name.localeCompare(b.name)});
+  var sel=$('#voiceSel');
+  sel.innerHTML='<option value="">Device ki default voice</option>'+sorted.map(function(v){return '<option value="'+esc(v.voiceURI)+'">'+esc(v.name)+' ('+esc(v.lang)+')</option>'}).join('');
+  if(!cfg.voice){var pick=sorted.filter(function(v){return rank(v)<2})[0];if(pick){cfg.voice=pick.voiceURI;saveCfg()}}
+  sel.value=cfg.voice;
+  if(sel.value!==cfg.voice){sel.value='';}
+  $('#voiceNote').textContent='Ye tumhare device ki built-in voice hai, isliye har phone par alag sunai degi. Hinglish naam English voice se kabhi kabhi galat bolte hain. Hindi voice chuno ya naam Devanagari me likho.';
+}
+function speak(text){
+  return new Promise(function(res){
+    if(cfg.mute||!synthOK){res();return}
+    try{
+      speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(text);
+      var v=voices.filter(function(x){return x.voiceURI===cfg.voice})[0];
+      if(v){u.voice=v;u.lang=v.lang}
+      u.rate=Number(cfg.rate);u.pitch=Number(cfg.pitch);u.volume=Number(cfg.vol);
+      var done=false,tm=setTimeout(fin,25000);
+      function fin(){if(!done){done=true;clearTimeout(tm);res()}}
+      u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);
+    }catch(e){res()}
+  });
+}
+$('#voiceSel').addEventListener('change',function(e){cfg.voice=e.target.value;saveCfg()});
+if(synthOK){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',loadVoices)}catch(e){}}else loadVoices();
+
+/* ===== Alerts queue ===== */
+var queue=[],busy=false,hist=[];
+function cleanName(s){return String(s).replace(/^@+/,'').trim().slice(0,30)}
+function compose(it){return [cfg.intro,it.name,it.msg].filter(function(x){return x&&String(x).trim()}).join('. ')}
+function renderQ(){
+  $('#qCount').textContent=queue.length+' baaki';
+  $('#hist').innerHTML=hist.length?hist.map(function(h){return '<div class="item"><div class="grow"><div class="t">'+esc(h.name)+'</div><div class="small muted">'+esc(h.time)+'</div></div><button class="btn small" data-replay="'+h.i+'">Dobara</button></div>'}).join(''):'<p class="small muted">Abhi koi alert nahi chala.</p>';
+}
+function showStage(it){
+  $('#stLbl').textContent=cfg.intro||'Naya subscriber';$('#stName').textContent=it.name;$('#stMsg').textContent=it.msg||'';
+  $('#stage').classList.add('showing');
+}
+function runNext(){
+  if(busy||!queue.length)return;
+  busy=true;var it=queue.shift();
+  cfg.subs=(Number(cfg.subs)||0)+(it.replay?0:1);saveCfg();$('#subs').value=cfg.subs;applyLook();
+  var id=Date.now()+Math.floor(Math.random()*1000);
+  hist.unshift({i:id,name:it.name,msg:it.msg,time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});hist=hist.slice(0,8);renderQ();
+  showStage(it);
+  Promise.all([speak(compose(it)),wait(Math.max(3,Number(cfg.dur))*1000)]).then(function(){
+    $('#stage').classList.remove('showing');return wait(700);
+  }).then(function(){busy=false;runNext()});
+}
+function enqueue(names,msg,replay){
+  var n=0;names.forEach(function(x){var c=cleanName(x);if(c){queue.push({name:c,msg:msg,replay:!!replay});n++}});
+  renderQ();runNext();return n;
+}
+$('#playNow').addEventListener('click',function(){
+  var n=cleanName($('#alName').value);if(!n){toast('Pehle subscriber ka naam likho');return}
+  enqueue([n],cfg.msg.trim());$('#alName').value='';
+});
+$('#addQ').addEventListener('click',function(){
+  var n=cleanName($('#alName').value);if(!n){toast('Pehle subscriber ka naam likho');return}
+  enqueue([n],cfg.msg.trim());$('#alName').value='';toast('Queue me daal diya');
+});
+$('#alName').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('#playNow').click()}});
+$('#bulkAdd').addEventListener('click',function(){
+  var lines=$('#bulk').value.split(/\r?\n/);var n=enqueue(lines,cfg.msg.trim());
+  if(n){$('#bulk').value='';toast(n+' naam queue me aaye')}else toast('Koi naam nahi mila');
+});
+$('#clearQ').addEventListener('click',function(){queue=[];renderQ();toast('Queue khali ho gayi')});
+$('#hist').addEventListener('click',function(e){
+  var b=e.target.closest('[data-replay]');if(!b)return;
+  var h=hist.filter(function(x){return String(x.i)===b.dataset.replay})[0];if(h)enqueue([h.name],h.msg,true);
+});
+$('#voiceTest').addEventListener('click',function(){
+  if(!synthOK){toast('Is browser me voice support nahi');return}
+  if(cfg.mute){toast('Voice mute hai, pehle mute band karo');return}
+  speak(compose({name:'Test Subscriber',msg:cfg.msg.trim()})).then(function(){});toast('Voice chal rahi hai');
+});
+function setFull(on){
+  var st=$('#stage');st.classList.toggle('full',on);document.body.classList.toggle('lock',on);
+  if(on){try{if(st.requestFullscreen)st.requestFullscreen().catch(function(){})}catch(e){}}
+  else{try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}}
+}
+$('#fullBtn').addEventListener('click',function(){setFull(true)});
+$('#closeFull').addEventListener('click',function(){setFull(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('#stage').classList.contains('full'))setFull(false)});
+document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&$('#stage').classList.contains('full'))setFull(false)});
+
+/* ===== Live tab ===== */
+var CHECK=['Title aur game set hai','Thumbnail ready hai','Mic ki awaaz test ki','Game audio balance kiya','Alerts tab par voice test kiya','Chat window khula hai'];
+var checks=store.get('checks',[]);
+function renderChecks(){
+  $('#checklist').innerHTML=CHECK.map(function(c,i){return '<label class="check"><input type="checkbox" data-ck="'+i+'"'+(checks[i]?' checked':'')+'><span>'+esc(c)+'</span></label>'}).join('');
+}
+$('#checklist').addEventListener('change',function(e){var c=e.target.closest('[data-ck]');if(!c)return;checks[Number(c.dataset.ck)]=c.checked;store.set('checks',checks)});
+$('#copyDetails').addEventListener('click',function(){
+  copyText([cfg.title,cfg.cat?'Game: '+cfg.cat:'',cfg.desc].filter(Boolean).join('\n\n'),'Details copy ho gayi');
+});
+var tStart=0,tTick=null,tElapsed=0;
+function pad(n){return n<10?'0'+n:''+n}
+function fmtHMS(s){return pad(Math.floor(s/3600))+':'+pad(Math.floor(s%3600/60))+':'+pad(s%60)}
+function tickTimer(){
+  var s=Math.floor((tElapsed+(tStart?Date.now()-tStart:0))/1000);
+  $('#timer').textContent=fmtHMS(s);
+  var ls=$('#liveState');
+  if(tStart){ls.className='badge live';ls.textContent=fmtHMS(s)}else{ls.className='badge';ls.textContent='Offline'}
+}
+$('#timerBtn').addEventListener('click',function(){
+  var b=$('#timerBtn');
+  if(tStart){tElapsed+=Date.now()-tStart;tStart=0;clearInterval(tTick);b.textContent='Timer dobara shuru'}
+  else{tStart=Date.now();tTick=setInterval(tickTimer,1000);b.textContent='Timer roko'}
+  tickTimer();
+});
+$('#timerReset').addEventListener('click',function(){tStart=0;tElapsed=0;clearInterval(tTick);$('#timerBtn').textContent='Stream timer shuru';tickTimer()});
+
+/* ===== Tools ===== */
+function nextSlots(n){
+  var now=Date.now(),out=[],base=new Date(now+IST);
+  for(var day=0;day<15;day++){CONFIG.slots.forEach(function(s){
+    var t=Date.UTC(base.getUTCFullYear(),base.getUTCMonth(),base.getUTCDate()+day,s.h,s.m)-IST;
+    if(new Date(t+IST).getUTCDay()===s.d&&t>now-2*3600e3)out.push({t:t,s:s});
+  })}
+  out.sort(function(a,b){return a.t-b.t});return out.slice(0,n);
+}
+function fmtTime(h,m){return (h%12||12)+':'+pad(m)+' '+(h>=12?'PM':'AM')}
+function fmtLeft(ms){var m=Math.floor(ms/6e4),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d?d+'d '+h+'h':(h?h+'h '+mm+'m':mm+'m')}
+function renderSched(){
+  $('#schedList').innerHTML=nextSlots(5).map(function(x){
+    var d=new Date(x.t+IST),live=x.t<=Date.now();
+    return '<div class="item"><div class="day"><b>'+d.getUTCDate()+'</b><span>'+DAYS[d.getUTCDay()]+'</span></div><div class="grow"><div class="t">'+esc(x.s.t)+'</div><div class="small muted">'+fmtTime(x.s.h,x.s.m)+' IST</div></div><span class="badge'+(live?' live':'')+'">'+(live?'Abhi':fmtLeft(x.t-Date.now()))+'</span></div>';
+  }).join('');
+}
+var lastWinner='';
+$('#pickBtn').addEventListener('click',function(){
+  var names=cfg.gw.split(/\r?\n/).map(cleanName).filter(Boolean);
+  if(!names.length){toast('Pehle naam daalo');return}
+  var r=new Uint32Array(1);try{crypto.getRandomValues(r)}catch(e){r[0]=Math.floor(Math.random()*4294967295)}
+  lastWinner=names[r[0]%names.length];$('#winner').textContent=lastWinner;$('#sayWinner').disabled=false;
+});
+$('#sayWinner').addEventListener('click',function(){if(lastWinner)speak('Giveaway winner. '+lastWinner+'. Congratulations!')});
+function renderChart(){
+  var vals=[120,180,90,260,210,340,300],max=400,W=300,H=150,pl=26,pb=20,pt=16,bw=24;
+  var plotH=H-pb-pt,gap=(W-pl-bw*7)/7,hi=vals.indexOf(Math.max.apply(null,vals)),s='';
+  [0,200,400].forEach(function(g){var y=pt+plotH-g/max*plotH;s+='<line class="gl" x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'"/><text x="'+(pl-4)+'" y="'+(y+3)+'" text-anchor="end">'+g+'</text>'});
+  vals.forEach(function(v,i){
+    var h=v/max*plotH,x=pl+gap/2+i*(bw+gap),y=pt+plotH-h;
+    s+='<rect class="b'+(i===hi?' hi':'')+'" x="'+x+'" y="'+y+'" width="'+bw+'" height="'+h+'" rx="3"/><text x="'+(x+bw/2)+'" y="'+(H-5)+'" text-anchor="middle">'+DAYS[(i+1)%7]+'</text>';
+    if(i===hi)s+='<text class="v" x="'+(x+bw/2)+'" y="'+(y-4)+'" text-anchor="middle">'+v+'</text>';
+  });
+  $('#chartBox').innerHTML='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Is hafte ke viewers, sample data">'+s+'</svg>';
+}
+
+/* ===== Studio ===== */
+var cv=$('#cv'),ctx=cv.getContext('2d'),M={},uid=0,sel=0,drag=null,sc=0,ac,dest,out,rec,pc,mic,msrc,bc=false,NM={pin:'Pin',poll:'Poll',cam:'Camera',scr:'Screen',img:'Image',txt:'Text',emo:'Sticker',alert:'Alert'};
+function mk(t,o){return Object.assign({id:++uid,t:t,x:640,y:360,w:400,h:225,s:1,r:0,o:1,fl:0,f:'',tx:'',c:'#ffffff',hd:0},o||{})}
+var scenes=(store.get('scn',null)||[[],[],[]]).slice(0,3);
+scenes.forEach(function(L){L.forEach(function(l){l.id=++uid});if(!L.some(function(l){return l.t==='alert'}))L.unshift(mk('alert',{w:1280,h:720}))});
+function ly(){return scenes[sc]}
+function cur(){return ly().filter(function(l){return l.id===sel})[0]}
+function sv(){store.set('scn',scenes.map(function(L){return L.filter(function(l){return /txt|emo|alert|pin|poll/.test(l.t)})}))}
+function aud(){if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();dest=ac.createMediaStreamDestination()}if(ac.state==='suspended')ac.resume()}
+function vid(st,l){var v=document.createElement('video');v.muted=true;v.playsInline=true;v.srcObject=st;v.onloadedmetadata=function(){if(v.videoWidth){l.h=l.w*v.videoHeight/v.videoWidth}};v.play().catch(function(){});return v}
+function box(l){if(l.t==='txt'){l.w=Math.max(80,l.tx.length*34);l.h=80}if(l.t==='emo'){l.w=l.h=140}}
+async function addL(t,v){
+  var l=mk(t);
+  try{
+    if(t==='cam'){var st=await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720,facingMode:'user'}});l.st=st;l.w=480;l.h=270;l.x=1000;l.y=520;l.fl=1;M[l.id]=vid(st,l)}
+    else if(t==='scr'){var d=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});l.st=d;l.w=1280;l.h=720;M[l.id]=vid(d,l);if(d.getAudioTracks().length){aud();ac.createMediaStreamSource(d).connect(dest)}d.getVideoTracks()[0].onended=function(){delL(l.id)}}
+    else if(t==='img'){$('#imgIn').onchange=function(e){var f=e.target.files[0];e.target.value='';if(!f)return;var im=new Image();im.onload=function(){l.w=Math.min(600,im.naturalWidth);l.h=l.w*im.naturalHeight/im.naturalWidth;M[l.id]=im;ly().push(l);sel=l.id;renderLy()};im.src=URL.createObjectURL(f)};$('#imgIn').click();return}
+    else if(t==='txt'){l.tx='DINO GAMERZ';l.y=120;box(l)}
+    else if(t==='emo'){l.tx=v||'🔥';box(l)}
+  }catch(e){toast('Nahi chala: '+(e.message||e.name));return}
+  ly().push(l);sel=l.id;renderLy();sv();
+}
+function delL(id){var L=ly(),i=L.findIndex(function(l){return l.id===id});if(i<0)return;var l=L[i];if(l.st)l.st.getTracks().forEach(function(t){t.stop()});delete M[id];L.splice(i,1);sel=0;renderLy();sv()}
+function renderLy(){
+  $('#lyList').innerHTML=ly().slice().reverse().map(function(l){return '<div class="item'+(l.id===sel?' sel':'')+'" data-l="'+l.id+'"><div class="grow t">'+NM[l.t]+(l.t==='txt'||l.t==='emo'?' · '+esc(l.tx.slice(0,14)):'')+'</div><button class="btn small" data-eye="'+l.id+'">'+(l.hd?'Show':'Hide')+'</button>'+(l.t==='alert'?'':'<button class="btn small" data-del="'+l.id+'" aria-label="Hatao" style="color:var(--live)">✕</button>')+'</div>'}).join('');
+  $('#dLy').innerHTML=$('#lyList').innerHTML;
+  var l=cur(),c=$('#lyCtl');c.hidden=!l||l.t==='alert';c.style.display=c.hidden?'none':'flex';
+  if(l){$('#cTxW').hidden=!(l.t==='txt'||l.t==='emo'||l.t==='pin');$('#cTx').value=l.tx;$('#cS').value=l.s;$('#cR').value=l.r;$('#cO').value=l.o;$('#cF').value=l.f}
+  $('#scenes').innerHTML=scenes.map(function(_,i){return '<button class="chip" data-sc="'+i+'" aria-pressed="'+(i===sc)+'">Scene '+(i+1)+'</button>'}).join('');$('#dScenes').innerHTML=$('#scenes').innerHTML;
+  var pl=ly().filter(function(l){return l.t==='poll'})[0],vh=pl?pl.po.map(function(o,i){return '<button class="btn small" data-vote="'+i+'">+1 '+esc(o.t)+' ('+o.v+')</button>'}).join(''):'';$('#votes').innerHTML=vh;$('#dVotes').innerHTML=vh;if(l)$('#dS').value=l.s;
+}
+var scClick;$('#scenes').addEventListener('click',scClick=function(e){var b=e.target.closest('[data-sc]');if(b){sc=+b.dataset.sc;sel=0;renderLy()}});
+var lyClick;$('#lyList').addEventListener('click',lyClick=function(e){var dl=e.target.closest('[data-del]');if(dl){delL(+dl.dataset.del);return}var x=e.target.closest('[data-eye]');if(x){var l=ly().filter(function(l){return l.id==x.dataset.eye})[0];l.hd=l.hd?0:1;renderLy();return}var r=e.target.closest('[data-l]');if(r){sel=+r.dataset.l;renderLy()}});
+$$('[data-add]').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.add==='emo')$('#stkBox').hidden=!$('#stkBox').hidden;else addL(b.dataset.add)})});
+function upd(f){return function(){var l=cur();if(l){f(l);box(l);sv()}}}
+$('#cTx').addEventListener('input',upd(function(l){l.tx=$('#cTx').value}));
+$('#cS').addEventListener('input',upd(function(l){l.s=+$('#cS').value}));
+$('#cR').addEventListener('input',upd(function(l){l.r=+$('#cR').value}));
+$('#cO').addEventListener('input',upd(function(l){l.o=+$('#cO').value}));
+$('#cF').addEventListener('change',upd(function(l){l.f=$('#cF').value}));
+$('#cFl').addEventListener('click',upd(function(l){l.fl=l.fl?0:1}));
+$('#cUp').addEventListener('click',function(){var L=ly(),i=L.findIndex(function(l){return l.id===sel});if(i>=0&&i<L.length-1){L.splice(i+1,0,L.splice(i,1)[0]);renderLy();sv()}});
+$('#cDn').addEventListener('click',function(){var L=ly(),i=L.findIndex(function(l){return l.id===sel});if(i>1){L.splice(i-1,0,L.splice(i,1)[0]);renderLy();sv()}});
+$('#cDel').addEventListener('click',function(){delL(sel)});
+function pt(e){var r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*1280/r.width,y:(e.clientY-r.top)*720/r.height}}
+cv.addEventListener('pointerdown',function(e){var p=pt(e),L=ly(),s0=cur();if(s0&&s0.t!=='alert'&&!s0.hd&&!bc){var c0=cor(s0);if(Math.hypot(p.x-c0.x,p.y-c0.y)<34){delL(s0.id);return}}for(var i=L.length-1;i>=0;i--){var l=L[i];if(l.t==='alert'||l.hd)continue;if(Math.abs(p.x-l.x)<=l.w*l.s/2&&Math.abs(p.y-l.y)<=l.h*l.s/2){sel=l.id;drag={dx:l.x-p.x,dy:l.y-p.y};cv.setPointerCapture(e.pointerId);break}}renderLy()});
+cv.addEventListener('pointermove',function(e){if(!drag)return;var l=cur(),p=pt(e);if(l){l.x=p.x+drag.dx;l.y=p.y+drag.dy}});
+cv.addEventListener('pointerup',function(){if(drag){drag=null;sv()}});
+function drawAlert(l){
+  var sh=$('#stage').classList.contains('showing');ctx.textAlign='center';
+  if(sh){ctx.fillStyle='rgba(0,0,0,.45)';ctx.fillRect(-640,-360,1280,720);ctx.fillStyle=cfg.accent;ctx.font='600 36px Chakra Petch,sans-serif';ctx.fillText((cfg.intro||'').toUpperCase(),0,-60,1100);ctx.fillStyle='#fff';ctx.font='700 110px Chakra Petch,sans-serif';ctx.fillText($('#stName').textContent,0,40,1100);ctx.font='36px Inter,sans-serif';ctx.fillText($('#stMsg').textContent,0,110,1100)}
+  var g=Math.min(1,(Number(cfg.subs)||0)/Math.max(1,Number(cfg.goal)||1));ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(-600,310,1200,18);ctx.fillStyle=cfg.accent;ctx.fillRect(-600,310,1200*g,18);ctx.fillStyle='#fff';ctx.font='600 24px Inter,sans-serif';ctx.textAlign='left';ctx.fillText('Subscriber goal',-600,298);ctx.textAlign='right';ctx.fillText(cfg.subs+' / '+cfg.goal,600,298);
+}
+function rr(x,y,w,h,r,c){ctx.fillStyle=c;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h);ctx.fill()}
+function cor(l){var a=l.r*Math.PI/180,hw=l.w*l.s/2,hh=l.h*l.s/2;return{x:l.x+hw*Math.cos(a)+hh*Math.sin(a),y:l.y+hw*Math.sin(a)-hh*Math.cos(a)}}
+function drawL(l){
+  if(l.hd)return;var m=M[l.id];ctx.save();ctx.globalAlpha=l.o;ctx.translate(l.x,l.y);ctx.rotate(l.r*Math.PI/180);
+  if(l.t==='alert'){drawAlert(l);ctx.restore();return}
+  ctx.scale(l.fl?-1:1,1);if(l.f&&'filter' in ctx)ctx.filter=l.f;
+  var w=l.w*l.s,h=l.h*l.s;ctx.textAlign='center';ctx.textBaseline='middle';
+  if(l.t==='txt'){ctx.font='700 '+(64*l.s)+'px Chakra Petch,sans-serif';ctx.lineJoin='round';ctx.lineWidth=8*l.s;ctx.strokeStyle='#000';ctx.strokeText(l.tx,0,0);ctx.fillStyle=l.c;ctx.fillText(l.tx,0,0)}
+  else if(l.t==='emo'){ctx.font=(120*l.s)+'px serif';ctx.fillText(l.tx,0,0)}
+  else if(l.t==='pin'){ctx.scale(l.s,l.s);var w=l.w,h=l.h;rr(-w/2,-h/2,w,h,18,'rgba(0,0,0,.7)');ctx.textAlign='left';ctx.fillStyle=cfg.accent;ctx.font='600 24px Inter,sans-serif';ctx.fillText('📌 PINNED',-w/2+24,-h/2+32);ctx.fillStyle='#fff';ctx.font='600 34px Inter,sans-serif';ctx.fillText(l.tx,-w/2+24,h/2-30,w-48)}
+  else if(l.t==='poll'){ctx.scale(l.s,l.s);var w=l.w,h=l.h,tot=l.po.reduce(function(a,o){return a+o.v},0)||1;rr(-w/2,-h/2,w,h,18,'rgba(0,0,0,.72)');ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='700 32px Chakra Petch,sans-serif';ctx.fillText(l.q,-w/2+24,-h/2+40,w-48);l.po.forEach(function(o,i){var y=-h/2+64+i*66;rr(-w/2+24,y,w-48,52,10,'rgba(255,255,255,.14)');if(o.v)rr(-w/2+24,y,(w-48)*o.v/tot,52,10,cfg.accent);ctx.fillStyle='#fff';ctx.font='600 26px Inter,sans-serif';ctx.textAlign='left';ctx.fillText(o.t,-w/2+36,y+34,w-200);ctx.textAlign='right';ctx.fillText(Math.round(o.v/tot*100)+'%',w/2-36,y+34)})}
+  else if(m&&(m.complete||m.readyState>=2))ctx.drawImage(m,-w/2,-h/2,w,h);
+  ctx.restore();
+}
+function frame(){
+  ctx.fillStyle=cfg.bg==='green'?'#00b140':cfg.bg==='black'?'#000':'#0d1411';ctx.fillRect(0,0,1280,720);
+  ly().forEach(drawL);
+  var l=cur();if(l&&!bc&&l.t!=='alert'&&!l.hd){ctx.save();ctx.translate(l.x,l.y);ctx.rotate(l.r*Math.PI/180);ctx.strokeStyle=cfg.accent;ctx.lineWidth=3;ctx.setLineDash([10,6]);ctx.strokeRect(-l.w*l.s/2,-l.h*l.s/2,l.w*l.s,l.h*l.s);ctx.restore();var c=cor(l);ctx.fillStyle='#ff4b4b';ctx.beginPath();ctx.arc(c.x,c.y,22,0,7);ctx.fill();ctx.fillStyle='#fff';ctx.font='700 26px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('✕',c.x,c.y+1)}
+  if(!$('#dock').hidden)dm.drawImage(cv,0,0,320,180);
+}
+function ui(){bc=!!(rec||pc);$('#recBtn').textContent=rec?'Record roko':'Record';$('#liveBtn').textContent=pc?'Live band':'Go live';$('#dLive').textContent=$('#liveBtn').textContent;var b=$('#stState');b.textContent=pc?'LIVE':rec?'REC':'Preview';b.className='badge'+(bc?' live':'');if(bc&&navigator.wakeLock)navigator.wakeLock.request('screen').catch(function(){})}
+function ensureOut(){aud();if(!out){out=cv.captureStream(30);dest.stream.getAudioTracks().forEach(function(t){out.addTrack(t)})}}
+$('#micSw').addEventListener('click',async function(){var b=$('#micSw'),on=b.getAttribute('aria-checked')!=='true';try{if(on){aud();mic=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});msrc=ac.createMediaStreamSource(mic);msrc.connect(dest)}else{mic.getTracks().forEach(function(t){t.stop()});msrc.disconnect()}b.setAttribute('aria-checked',String(on))}catch(e){toast('Mic nahi mila')}});
+$('#recBtn').addEventListener('click',function(){
+  if(rec){rec.stop();return}
+  try{ensureOut();var mt=['video/mp4','video/webm;codecs=vp9,opus','video/webm'].filter(function(t){return MediaRecorder.isTypeSupported(t)})[0],ch=[];
+  rec=new MediaRecorder(out,{mimeType:mt,videoBitsPerSecond:4e6});rec.ondataavailable=function(e){if(e.data.size)ch.push(e.data)};
+  rec.onstop=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob(ch,{type:mt.split(';')[0]}));a.download='dino-gamerz-'+Date.now()+(mt.indexOf('mp4')>=0?'.mp4':'.webm');a.click();rec=null;ui()};
+  rec.start(1000);ui()}catch(e){rec=null;toast('Record nahi hua')}
+});
+$('#liveBtn').addEventListener('click',async function(){
+  if(pc){pc.close();pc=null;ui();return}
+  if(!/^https:\/\//i.test(cfg.whip)){toast('Pehle WHIP https link daalo');return}
+  try{
+    ensureOut();pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});var p=pc;
+    out.getTracks().forEach(function(t){p.addTrack(t,out)});
+    p.onconnectionstatechange=function(){if(/failed|closed/.test(p.connectionState)&&pc===p){pc=null;ui();toast('Stream band ho gayi')}};
+    await p.setLocalDescription(await p.createOffer());
+    await new Promise(function(r){if(p.iceGatheringState==='complete')return r();p.onicegatheringstatechange=function(){if(p.iceGatheringState==='complete')r()};setTimeout(r,2500)});
+    var h={'Content-Type':'application/sdp'};if(cfg.wkey)h.Authorization='Bearer '+cfg.wkey;
+    var r=await fetch(cfg.whip,{method:'POST',headers:h,body:p.localDescription.sdp});
+    if(!r.ok)throw new Error('Server ne '+r.status+' diya');
+    await p.setRemoteDescription({type:'answer',sdp:await r.text()});
+    if(!tStart)$('#timerBtn').click();
+  }catch(e){if(pc){pc.close();pc=null}toast('Live nahi hui: '+e.message)}
+  ui();
+});
+
+/* ===== Thumbnail ===== */
+var tc=$('#tc'),tx=tc.getContext('2d'),timg=null;
+function tDraw(){
+  tx.fillStyle='#0d1411';tx.fillRect(0,0,1280,720);
+  if(timg){var w=timg.naturalWidth||timg.width,h=timg.naturalHeight||timg.height,k=Math.max(1280/w,720/h);tx.drawImage(timg,(1280-w*k)/2,(720-h*k)/2,w*k,h*k)}
+  var g=tx.createLinearGradient(0,380,0,720);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.75)');tx.fillStyle=g;tx.fillRect(0,0,1280,720);
+  if(cfg.ttx){var f=160;tx.textAlign='left';tx.textBaseline='alphabetic';do{tx.font='700 '+f+'px Chakra Petch,sans-serif';f-=6}while(tx.measureText(cfg.ttx).width>1180&&f>30);tx.lineJoin='round';tx.lineWidth=14;tx.strokeStyle='#000';tx.strokeText(cfg.ttx,50,670);tx.fillStyle=cfg.accent;tx.fillText(cfg.ttx,50,670)}
+}
+function tBlob(){return new Promise(function(r){tc.toBlob(function(b){if(b.size>2e6)tc.toBlob(r,'image/jpeg',.7);else r(b)},'image/jpeg',.9)})}
+$('#tPick').addEventListener('click',function(){$('#tFile').click()});
+$('#tFile').addEventListener('change',function(e){var f=e.target.files[0];e.target.value='';if(!f)return;var im=new Image();im.onload=function(){timg=im;tDraw()};im.src=URL.createObjectURL(f)});
+$('#tFrame').addEventListener('click',function(){var c=document.createElement('canvas');c.width=1280;c.height=720;c.getContext('2d').drawImage(cv,0,0);timg=c;tDraw();toast('Studio ka frame le liya')});
+$('#tDl').addEventListener('click',async function(){var a=document.createElement('a');a.href=URL.createObjectURL(await tBlob());a.download='thumbnail.jpg';a.click()});
+
+/* ===== YouTube ===== */
+var TOK='',seen=store.get('seen',{}),lastErr='';
+function gState(){var b=$('#gState');b.textContent=TOK?'Connected':'Not connected';b.className='badge '+(TOK?'ok':'')}
+async function yt(p,o){o=o||{};o.headers=Object.assign({Authorization:'Bearer '+TOK},o.headers||{});var r=await fetch('https://www.googleapis.com/'+p,o);if(r.status===401){TOK='';gState();throw new Error('Login expire, Connect tab se dobara login karo')}if(!r.ok){var e=await r.json().catch(function(){return{}});throw new Error(e.error&&e.error.message||r.status)}return r.json()}
+$('#gBtn').addEventListener('click',function(){
+  if(!cfg.cid){toast('Pehle Client ID daalo');return}
+  function go(){google.accounts.oauth2.initTokenClient({client_id:cfg.cid,scope:'https://www.googleapis.com/auth/youtube',callback:function(r){if(r.access_token){TOK=r.access_token;gState();toast('Google connect ho gaya');poll()}else toast('Login nahi hua')}}).requestAccessToken()}
+  if(window.google&&google.accounts)return go();
+  var sc2=document.createElement('script');sc2.src='https://accounts.google.com/gsi/client';sc2.onload=go;sc2.onerror=function(){toast('Google script load nahi hui. Is file ko apne https link se kholo')};document.head.appendChild(sc2);
+});
+async function poll(){
+  if(!TOK||!cfg.auto)return;
+  try{
+    var d=await yt('youtube/v3/subscriptions?part=subscriberSnippet&mySubscribers=true&order=recent&maxResults=10'),nw=[],base=!seen._b;
+    (d.items||[]).reverse().forEach(function(it){var s=it.subscriberSnippet;if(s&&!seen[s.channelId]){seen[s.channelId]=1;nw.push(s.title)}});
+    seen._b=1;store.set('seen',seen);
+    if(base){var c=await yt('youtube/v3/channels?part=statistics&mine=true'),n=c.items&&c.items[0]&&+c.items[0].statistics.subscriberCount;if(n){cfg.subs=n;saveCfg();$('#subs').value=n;applyLook()}toast('Auto alert chalu')}
+    else if(nw.length)enqueue(nw,cfg.msg.trim());
+    lastErr='';
+  }catch(e){if(e.message!==lastErr){lastErr=e.message;toast(e.message)}}
+}
+setInterval(poll,15000);
+function renderAuto(){$('#autoSw').setAttribute('aria-checked',String(!!cfg.auto))}
+$('#autoSw').addEventListener('click',function(){cfg.auto=!cfg.auto;saveCfg();renderAuto();if(cfg.auto){if(!TOK)toast('Pehle Google connect karo');else poll()}});
+$('#ytApply').addEventListener('click',async function(){
+  if(!TOK){toast('Pehle Connect tab me Google login karo');return}
+  try{
+    var b=await yt('youtube/v3/liveBroadcasts?part=id,status&mine=true&maxResults=10'),it=(b.items||[]),x=it.filter(function(i){return i.status.lifeCycleStatus==='live'})[0]||it.filter(function(i){return /ready|testing|created/.test(i.status.lifeCycleStatus)})[0];
+    if(!x){toast('Koi live ya upcoming stream nahi mili');return}
+    var v=(await yt('youtube/v3/videos?part=snippet&id='+x.id)).items[0].snippet,tg=(v.tags||[]).slice();if(cfg.cat&&tg.indexOf(cfg.cat)<0)tg.push(cfg.cat);
+    await yt('youtube/v3/videos?part=snippet',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:x.id,snippet:{title:cfg.title||v.title,description:cfg.desc||v.description,categoryId:cfg.catId,tags:tg}})});
+    if(timg||cfg.ttx)await yt('upload/youtube/v3/thumbnails/set?videoId='+x.id,{method:'POST',headers:{'Content-Type':'image/jpeg'},body:await tBlob()});
+    toast('YouTube update ho gaya');
+  }catch(e){toast(e.message)}
+});
+['whip','wkey','cid','ttx'].forEach(function(id){var e=$('#'+id);e.value=cfg[id]||'';e.addEventListener('input',function(){cfg[id]=e.value.trim();saveCfg();if(id==='ttx')tDraw()})});
+var cs=$('#catId');cs.value=cfg.catId;cs.addEventListener('change',function(){cfg.catId=cs.value;saveCfg()});
+/* ===== Stickers, chat, dock, channel live ===== */
+var STK=['🦖','🔥','💀','😂','❤️','👑','🎮','🏆','⚡','😎','👍','🎯','💎','🤯','🥶','💥','🎉','😡'];
+$('#stkBox').innerHTML=$('#dStk').innerHTML=STK.map(function(e){return '<button class="chip" data-stk="'+e+'">'+e+'</button>'}).join('');
+document.addEventListener('click',function(e){
+  var k=e.target.closest('[data-stk]');if(k){addL('emo',k.dataset.stk);return}
+  var v=e.target.closest('[data-vote]');if(v){var p=ly().filter(function(l){return l.t==='poll'})[0];if(p){p.po[+v.dataset.vote].v++;renderLy()}}
+});
+$('#pinB').addEventListener('click',function(){
+  var t=$('#pinT').value.trim();if(!t){toast('Pehle pin ka message likho');return}
+  var L=ly();for(var i=L.length-1;i>=0;i--)if(L[i].t==='pin')L.splice(i,1);
+  var l=mk('pin',{tx:t,w:760,h:120,y:620});L.push(l);sel=l.id;renderLy();sv();toast('Pin ho gaya');
+});
+$('#pollB').addEventListener('click',function(){
+  var q=$('#pq').value.trim(),o=[0,1,2].map(function(i){return $('#po'+i).value.trim()}).filter(Boolean);
+  if(!q||o.length<2){toast('Sawal aur kam se kam 2 option daalo');return}
+  var L=ly();for(var i=L.length-1;i>=0;i--)if(L[i].t==='poll')L.splice(i,1);
+  var l=mk('poll',{q:q,po:o.map(function(t){return{t:t,v:0}}),w:620,h:84+o.length*66,x:940,y:300});L.push(l);sel=l.id;renderLy();sv();toast('Poll lag gaya, vote +1 se badhao');
+});
+$('#dockBtn').addEventListener('click',function(){$('#dock').hidden=!$('#dock').hidden});
+$('#dockX').addEventListener('click',function(){$('#dock').hidden=true});
+$('#dScenes').addEventListener('click',scClick);$('#dLy').addEventListener('click',lyClick);
+$('#dS').addEventListener('input',function(){var l=cur();if(l)l.s=+$('#dS').value;$('#cS').value=$('#dS').value});
+$('#dMic').addEventListener('click',function(){$('#micSw').click()});
+$('#dLive').addEventListener('click',function(){$('#liveBtn').click()});
+$('#rCopy').addEventListener('click',function(){copyText($('#rtmp').value+'\n'+$('#rkey').value,'URL aur key copy ho gayi')});
+$('#ytLive').addEventListener('click',async function(){
+  if(!TOK){toast('Pehle Connect tab me Google login karo');return}
+  var h={'Content-Type':'application/json'},ti=cfg.title||'Dino Gamerz Live';
+  try{
+    var st=await yt('youtube/v3/liveStreams?part=snippet,cdn',{method:'POST',headers:h,body:JSON.stringify({snippet:{title:ti},cdn:{frameRate:'variable',resolution:'variable',ingestionType:'rtmp'}})});
+    var b=await yt('youtube/v3/liveBroadcasts?part=snippet,status,contentDetails',{method:'POST',headers:h,body:JSON.stringify({snippet:{title:ti,description:cfg.desc||'',scheduledStartTime:new Date(Date.now()+6e4).toISOString()},status:{privacyStatus:'public',selfDeclaredMadeForKids:false},contentDetails:{enableAutoStart:true,enableAutoStop:true}})});
+    await yt('youtube/v3/liveBroadcasts/bind?part=id&id='+b.id+'&streamId='+st.id,{method:'POST'});
+    var i=st.cdn.ingestionInfo;$('#rtmp').value=i.ingestionAddress;$('#rkey').value=i.streamName;$('#rtmpBox').hidden=false;toast('YouTube live ban gayi');
+  }catch(e){toast(e.message)}
+});
+renderLy();
+renderAuto();gState();tDraw();var dm=$('#dm').getContext('2d');try{var wk=new Worker(URL.createObjectURL(new Blob(['setInterval(function(){postMessage(0)},33)'])));wk.onmessage=frame}catch(e){setInterval(frame,33)}
+
+/* ===== Init ===== */
+bindCfg();renderMute();applyLook();renderChecks();renderQ();renderSched();renderChart();
+setInterval(renderSched,60000);
+})();
+</script>
+</body>
+</html>
